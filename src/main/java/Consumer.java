@@ -20,7 +20,7 @@ public class Consumer {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList(TOPIC));
 
-        int numMessages = 10000000; // 10 million messages
+        int numMessages = 100; // 1 billion messages
         int messageCount = 0;
         long startTime = System.currentTimeMillis();
 

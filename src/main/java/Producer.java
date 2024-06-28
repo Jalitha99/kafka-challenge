@@ -16,7 +16,7 @@ public class Producer {
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
-        int numMessages = 10000000; // 10 million messages
+        int numMessages = 100; // 1 billion messages
 
         long startTime = System.currentTimeMillis();
 
