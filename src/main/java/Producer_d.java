@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Producer_d{
 
-    private static final String TOPIC = "random-numbers_topic";
+    private static final String TOPIC = "random-numbers-topic00";
     private static final Random random = new Random();
 
     public static void main(String[] args) {
@@ -23,7 +23,7 @@ public class Producer_d{
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
-        int numMessages = 1000000000; // 1 billion messages
+        int numMessages = 1000000; // 1 billion messages
 
         long startTime = System.currentTimeMillis();
 
