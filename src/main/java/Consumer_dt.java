@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Consumer_dt {
-    public static final String TOPIC = "a027"; // Match the topic name from your producer
+    public static final String TOPIC = "006"; // Match the topic name from your producer
     private static final String GROUP_ID = "consumer-group1";
     private static final String OUTPUT_FILE = "counts.csv";
     public static final int POLL_TIMEOUT = 10000; // Poll timeout in milliseconds
@@ -20,11 +20,14 @@ public class Consumer_dt {
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.31.10.129:9092, 172.31.10.129:9093, 172.31.10.129:9094, 172.31.10.129:9095"); // Match your Kafka server address
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.20.10.9:9092,172.20.10.9:9093"); // Match your Kafka server address
         props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+//        props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 16384);
+//        props.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, 10000); // 1seconds maximum wait time
+//        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 16384*2);
 
         ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
         Map<Integer, Integer> counts = Collections.synchronizedMap(new HashMap<>());
@@ -63,7 +66,7 @@ class ConsumerWorker implements Runnable {
     private final Properties props;
     private final Map<Integer, Integer> counts;
     private final AtomicInteger totalCount; // Shared thread-safe counter for total message count
-    public static final int POLL_TIMEOUT = 10000; // Poll timeout in milliseconds
+    public static final int POLL_TIMEOUT = 30000; // Poll timeout in milliseconds
 
     ConsumerWorker(Properties props, Map<Integer, Integer> counts, AtomicInteger totalCount) {
         this.props = props;
@@ -89,10 +92,9 @@ class ConsumerWorker implements Runnable {
                         counts.put(number, counts.getOrDefault(number, 0) + 1);
                     }
                     totalCount.incrementAndGet(); // Increment total count atomically
-                    if (totalCount.get() % 1000000 == 0){
-                        System.out.println("Message Consumed :" + totalCount.get());
+                    if (totalCount.get() % 1000000 == 0) {
+                        System.out.println("Messages Consumed: " + totalCount.get());
                     }
-//                    System.out.println("Partition: " + record.partition() + ", Offset: " + record.offset() + ", Value: " + record.value());
                 }
             }
         } finally {
