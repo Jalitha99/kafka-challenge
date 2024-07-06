@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Consumer_dt_2 {
-    public static final String TOPIC = "028"; // Match the topic name from your producer
+    public static final String TOPIC = "041"; // Match the topic name from your producer
     private static final String GROUP_ID = "consumer-group1";
     private static final String SERVER_IP = "172.15.10.106"; // Aggregator address
     private static final int SERVER_PORT = 12345;
